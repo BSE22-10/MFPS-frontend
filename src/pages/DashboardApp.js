@@ -254,10 +254,17 @@ export default function DashboardApp() {
                     chartinfo={stuff}
                     charttype={'line'}
                     timely={'true'}
+                    duration={'daily'}
                   />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                  Item Two
+                  <DashChart
+                    title="Number of cars received weekly"
+                    chartinfo={stuff}
+                    charttype={'line'}
+                    timely={'true'}
+                    duration={'weekly'}
+                  />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                   Item Three
