@@ -34,6 +34,7 @@ export default function DashChart({
   chartinfo,
   charttype,
   timely,
+  duration,
   ...other
 }) {
   chartOptions = chartinfo.options;
@@ -53,7 +54,7 @@ export default function DashChart({
       setLoading(true);
       axios({
         method: 'get',
-        url: `${process.env.REACT_APP_API_URL}/slots/timelyData`,
+        url: `${process.env.REACT_APP_API_URL}/slots/timelyData?duration=${duration}`,
         headers: {
           'Content-Type': 'application/json',
         },
