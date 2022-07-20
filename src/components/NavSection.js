@@ -14,7 +14,7 @@ const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props
   height: 48,
   position: 'relative',
   textTransform: 'capitalize',
-  color: theme.palette.text.secondary,
+  color: 'white',
   borderRadius: theme.shape.borderRadius,
 }));
 
@@ -48,7 +48,7 @@ function NavItem({ item, active }) {
   };
 
   const activeRootStyle = {
-    color: 'primary.main',
+    color: 'black',
     fontWeight: 'fontWeightMedium',
     bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
   };
@@ -89,6 +89,7 @@ function NavItem({ item, active }) {
                   to={path}
                   sx={{
                     ...(isActiveSub && activeSubStyle),
+                    color: 'white',
                   }}
                 >
                   <ListItemIconStyle>
