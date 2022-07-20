@@ -43,6 +43,8 @@ export default function DashChart({
   const [timelyData, setTimelyDate] = useState(false);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [serie, setSerie] = useState([]);
   const isMounted = useRef(false);
   console.log(timely);
   if (timely === 'true') {
@@ -61,8 +63,8 @@ export default function DashChart({
           console.log(result);
           result.data.map((info) => {
             categories.push(info.time);
-            //   setCategory((category) => [...category, info.floor_id]);
-            // setSerie((serie) => [...serie, info.count]);
+            setCategory((category) => [...category, info.time]);
+            setSerie((serie) => [...serie, info.count]);
             // setCategory(info.categories);
             // setCategory((category) => {
             //   category.push(info.floor_id);
@@ -70,55 +72,55 @@ export default function DashChart({
             series.push(info.count);
             return true;
           });
-          const stuff = {
-            options: {
-              chart: {
-                id: 'basic-bar',
-              },
-              xaxis: {
-                categories: categories,
-              },
-              yaxis: [
-                {
-                  axisTicks: {
-                    show: true,
-                  },
-                  axisBorder: {
-                    show: true,
-                    color: 'inherit',
-                  },
-                  // labels: {
-                  //   style: {
-                  //     colors: '#FF1654',
-                  //   },
-                  // },
-                  title: {
-                    text: 'Number of cars',
-                    // style: {
-                    //   color: '#FF1654',
-                    // },
-                  },
-                },
-              ],
-            },
-            series: [
-              {
-                name: 'Daily activity',
-                data: series,
-              },
-            ],
-          };
-          setData(stuff);
         })
         .catch((error) => {
           console.log(error);
           // setError(error.response.data);
         });
     }, []);
-    chartOptions = data.options;
-    chartSeries = data.series;
+    const items2 = {
+      options: {
+        chart: {
+          id: 'basic-bar',
+        },
+        xaxis: {
+          categories: category,
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: true,
+              color: 'inherit',
+            },
+            // labels: {
+            //   style: {
+            //     colors: '#FF1654',
+            //   },
+            // },
+            title: {
+              text: 'Number of cars',
+              // style: {
+              //   color: '#FF1654',
+              // },
+            },
+          },
+        ],
+      },
+      series: [
+        {
+          name: 'Daily activity',
+          data: serie,
+        },
+      ],
+    };
+    console.log(category);
+    chartOptions = items2.options;
+    chartSeries = items2.series;
   }
-  console.log(data);
+
   // setCategories(chartinfo.options.xaxis.categories.categories);
   // console.log(other);
   return (
