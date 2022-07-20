@@ -58,16 +58,17 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       sx={{
         height: 1,
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
+        backgroundColor: '#6572E9',
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        <Typography>MFPS</Typography>
+        <Typography sx={{ fontWeight: 700 }}>MFPS</Typography>
         {/* <Logo /> */}
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
+          <AccountStyle sx={{ backgroundColor: '#f9f9f9' }}>
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
