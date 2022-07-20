@@ -1,10 +1,15 @@
 import { faker } from '@faker-js/faker';
 // @mui
+import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 import BeatLoader from 'react-spinners/BeatLoader';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 // components
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
@@ -14,7 +19,7 @@ import {
   AppNewsUpdate,
   AppOrderTimeline,
   AppCurrentVisits,
-  AppWebsiteVisits,
+  DashChart,
   AppTrafficBySite,
   AppWidgetSummary,
   AppCurrentSubject,
@@ -25,13 +30,54 @@ import {
 // ----------------------------------------------------------------------
 var categories = [];
 var series = [];
+var check = false;
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 // const [setCategory, category] = useState();
 // const [setSeries, series] = useState();
 export default function DashboardApp() {
-  const [floorData, setData] = useState([]);
+  const isMounted = useRef(false);
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const [floorData, setData] = useState();
   const [loading, setLoading] = useState(true);
-  console.log(process.env.REACT_APP_API_URL);
+  const [category, setCategory] = useState([]);
+  const [serie, setSerie] = useState([]);
   useEffect(() => {
     setLoading(true);
     axios({
@@ -43,39 +89,62 @@ export default function DashboardApp() {
     })
       .then((result) => {
         setLoading(false);
-
-        console.log(result);
         result.data.map((info) => {
           categories.push(info.floor_id);
           // setCategory(info.categories);
+          setCategory((category) => [...category, info.floor_id]);
+          // setCategory(info.floor_id);
           series.push(info.count);
+          setSerie((serie) => [...serie, info.count]);
           return true;
         });
-        console.log(categories);
-        const stuff = {
-          options: {
-            chart: {
-              id: 'basic-bar',
-            },
-            xaxis: {
-              categories: categories,
-            },
-          },
-          series: [
-            {
-              name: 'No. of cars',
-              data: series,
-            },
-          ],
-        };
-        setData(stuff);
+        console.log(category);
       })
       .catch((error) => {
         console.log(error);
         // setError(error.response.data);
       });
   }, []);
-
+  const stuff = {
+    options: {
+      chart: {
+        id: 'basic-bar',
+      },
+      xaxis: {
+        categories: category,
+      },
+      yaxis: [
+        {
+          axisTicks: {
+            show: true,
+          },
+          axisBorder: {
+            show: true,
+            color: 'inherit',
+          },
+          // labels: {
+          //   style: {
+          //     colors: '#FF1654',
+          //   },
+          // },
+          title: {
+            text: 'Number of cars',
+            // style: {
+            //   color: '#FF1654',
+            // },
+          },
+        },
+      ],
+    },
+    series: [
+      {
+        name: 'No. of cars',
+        data: serie,
+      },
+    ],
+  };
+  // setData(stuff);
+  console.log(stuff);
   const theme = useTheme();
 
   return (
@@ -111,7 +180,7 @@ export default function DashboardApp() {
               <NewBarChart />
             </div>
             <Grid item xs={12} md={12} lg={12}>
-              <AppWebsiteVisits
+              <DashChart
                 title="Number of cars on each floor"
                 chartLabels={[
                   '01/01/2003',
@@ -146,7 +215,9 @@ export default function DashboardApp() {
                     data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
                   },
                 ]}
-                chartinfo={floorData}
+                chartinfo={stuff}
+                charttype={'bar'}
+                timely={'false'}
               />
             </Grid>
 
@@ -169,7 +240,30 @@ export default function DashboardApp() {
     </Grid> */}
 
             <Grid item xs={12} md={12} lg={12}>
-              <AppConversionRates
+              <Box sx={{ width: '100%' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Daily" {...a11yProps(0)} />
+                    <Tab label="Weekly" {...a11yProps(1)} />
+                    <Tab label="Monthly" {...a11yProps(2)} />
+                  </Tabs>
+                </Box>
+                <TabPanel value={value} index={0}>
+                  <DashChart
+                    title="Number of cars received daily"
+                    chartinfo={stuff}
+                    charttype={'line'}
+                    timely={'true'}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  Item Two
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  Item Three
+                </TabPanel>
+              </Box>
+              {/* <AppConversionRates
                 title="Conversion Rates"
                 subheader="(+43%) than last year"
                 chartData={[
@@ -184,7 +278,7 @@ export default function DashboardApp() {
                   { label: 'United States', value: 1200 },
                   { label: 'United Kingdom', value: 1380 },
                 ]}
-              />
+              /> */}
             </Grid>
             {/* 
     <Grid item xs={12} md={6} lg={4}>
