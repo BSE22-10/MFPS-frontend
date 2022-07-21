@@ -192,85 +192,87 @@ export default function Transactions() {
           New User
         </Button>
       </Stack> */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12} lg={12}>
+              <Card>
+                {/* <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} /> */}
+                <Typography variant="h4" sx={{ paddingLeft: '30px' }}>
+                  Transaction details
+                </Typography>
+                <Scrollbar>
+                  <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                      <UserListHead
+                        order={order}
+                        orderBy={orderBy}
+                        headLabel={TABLE_HEAD}
+                        rowCount={transactions.length}
+                        numSelected={selected.length}
+                        onRequestSort={handleRequestSort}
+                        onSelectAllClick={handleSelectAllClick}
+                      />
+                      <TableBody>
+                        {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                          const { id, date, count } = row;
+                          const isItemSelected = selected.indexOf(date) !== -1;
 
-          <Card>
-            {/* <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} /> */}
-            <Typography variant="h4" sx={{ paddingLeft: '30px' }}>
-              Transaction details
-            </Typography>
-            <Scrollbar>
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <UserListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={transactions.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                      const { id, date, count } = row;
-                      const isItemSelected = selected.indexOf(date) !== -1;
+                          return (
+                            <TableRow
+                              hover
+                              key={id}
+                              tabIndex={-1}
+                              role="checkbox"
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell padding="checkbox">
+                                <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, date)} />
+                              </TableCell>
+                              <TableCell component="th" scope="row" padding="none">
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                  <Typography variant="subtitle2" noWrap>
+                                    {date}
+                                  </Typography>
+                                </Stack>
+                              </TableCell>
+                              <TableCell align="left">{`UGX ${count}`}</TableCell>
+                            </TableRow>
+                          );
+                        })}
+                        {emptyRows > 0 && (
+                          <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell colSpan={6} />
+                          </TableRow>
+                        )}
+                      </TableBody>
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, date)} />
-                          </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Typography variant="subtitle2" noWrap>
-                                {date}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{`UGX ${count}`}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
+                      {isUserNotFound && (
+                        <TableBody>
+                          <TableRow>
+                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                              <SearchNotFound searchQuery={filterName} />
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      )}
+                    </Table>
+                  </TableContainer>
+                </Scrollbar>
 
-                  {isUserNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={USERLIST.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Card>
-
-          <Grid item xs={12} md={12} lg={12}>
-            <DashChart title="Number of cars on each floor" chartinfo={stuff} charttype={'line'} timely={'false'} />
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={transactions.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={12} lg={12}>
+              <DashChart title="Revenue generated" chartinfo={stuff} charttype={'line'} timely={'false'} />
+            </Grid>
           </Grid>
         </Container>
       )}
