@@ -9,6 +9,7 @@ import {
   Card,
   Table,
   Stack,
+  Grid,
   Avatar,
   Button,
   Checkbox,
@@ -21,12 +22,14 @@ import {
   TablePagination,
 } from '@mui/material';
 // components
+import setChartData from '../hooks/setChartData';
 import Page from '../components/Page';
 import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import { DashChart } from '../sections/@dashboard/app';
 // mock
 import USERLIST from '../_mock/user';
 
@@ -86,6 +89,8 @@ export default function Transactions() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [transactions, SetTransactions] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [series, setSeries] = useState([]);
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -99,6 +104,13 @@ export default function Transactions() {
     })
       .then((result) => {
         setLoading(false);
+        result.data.map((info) => {
+          // setCategory(info.categories);
+          setCategories((category) => [...category, info.date]);
+          // setCategory(info.floor_id);
+          setSeries((serie) => [...serie, info.count]);
+          return true;
+        });
         SetTransactions(result.data);
       })
       .catch((error) => {
@@ -106,6 +118,10 @@ export default function Transactions() {
         // setError(error.response.data);
       });
   }, []);
+
+  console.log(series);
+  const stuff = setChartData(categories, series, 'Transaction detials', 'Amount');
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -252,6 +268,10 @@ export default function Transactions() {
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Card>
+
+          <Grid item xs={12} md={12} lg={12}>
+            <DashChart title="Number of cars on each floor" chartinfo={stuff} charttype={'line'} timely={'false'} />
+          </Grid>
         </Container>
       )}
     </Page>
