@@ -267,7 +267,13 @@ export default function DashboardApp() {
                   />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  Item Three
+                  <DashChart
+                    title="Number of cars received monthly"
+                    chartinfo={stuff}
+                    charttype={'line'}
+                    timely={'true'}
+                    duration={'monthly'}
+                  />
                 </TabPanel>
               </Box>
               {/* <AppConversionRates
