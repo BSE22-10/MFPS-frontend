@@ -39,7 +39,6 @@ export default function DashChart({
 }) {
   chartOptions = chartinfo.options;
   chartSeries = chartinfo.series;
-  console.log(chartinfo);
   // const [categories, setCategories] = useState();
   const [timelyData, setTimelyDate] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -47,9 +46,7 @@ export default function DashChart({
   const [category, setCategory] = useState([]);
   const [serie, setSerie] = useState([]);
   const isMounted = useRef(false);
-  console.log(timely);
   if (timely === 'true') {
-    console.log('Here we are');
     useEffect(() => {
       setLoading(true);
       axios({
@@ -61,7 +58,6 @@ export default function DashChart({
       })
         .then((result) => {
           setLoading(false);
-          console.log(result);
           result.data.map((info) => {
             categories.push(info.time);
             setCategory((category) => [...category, info.time]);
@@ -117,7 +113,6 @@ export default function DashChart({
         },
       ],
     };
-    console.log(category);
     chartOptions = items2.options;
     chartSeries = items2.series;
   }
