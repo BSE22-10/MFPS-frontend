@@ -1,10 +1,9 @@
 import React from 'react';
 import { Typography, Card, CardContent, Box, Grid, Popover, Modal, Paper } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 export default function SlotCard(props) {
   const status = props.slot.SlotStatus.length === 0 || props.slot.SlotStatus[0].status === false ? false : true;
-  console.log(status);
+  console.log(props);
   // console.log(props.slot.SlotStatus.length === 0);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClose = () => {
@@ -25,20 +24,20 @@ export default function SlotCard(props) {
   var textColor = 'black';
   if (status === true) {
     cardStyle = {
-      backgroundColor: '#6D3D6D',
+      backgroundColor: 'green',
       color: '#72C1C6',
     };
     textColor = '#72C1C6';
   } else {
     cardStyle = {
-      backgroundColor: '#72C1C6',
+      backgroundColor: 'red',
       color: '6D3D6D',
     };
     textColor = '6D3D6D';
   }
   return (
     <div>
-      <Paper style={cardStyle} sx={{ height: 200 }}>
+      <Paper style={cardStyle} sx={{ height: 150, width: 90, border: 2, borderColor: 'black' }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             <Box
@@ -47,15 +46,6 @@ export default function SlotCard(props) {
                 justifyContent: 'space-between',
               }}
             >
-              <MoreHorizIcon
-                sx={{
-                  cursor: 'pointer',
-                }}
-                id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-              />
               {/* <Popover
 id={id}
 open={open}
@@ -86,7 +76,11 @@ horizontal: 'left',
                 justifyContent: 'space-between',
                 pointer: 'cursor',
               }}
-            ></Box>
+            >
+              <Typography variant="h3" color={'white'}>
+                {props.count}
+              </Typography>
+            </Box>
             {/* <p style={{ color: textColor }}>{description}</p> */}
           </Typography>
         </CardContent>
