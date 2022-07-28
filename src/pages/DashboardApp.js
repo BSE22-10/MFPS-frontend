@@ -9,9 +9,10 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 // components
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, createContext } from 'react';
 import axios from 'axios';
 import Page from '../components/Page';
+import Accordian from 'src/layouts/dashboard/Accordian';
 import Iconify from '../components/Iconify';
 // sections
 import {
@@ -31,6 +32,7 @@ import {
 var categories = [];
 var series = [];
 var check = false;
+export const FloorContext = createContext();
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,6 +79,7 @@ export default function DashboardApp() {
   const [floorData, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState([]);
+  const [floors, setFloors] = useState([]);
   const [serie, setSerie] = useState([]);
   useEffect(() => {
     setLoading(true);
@@ -105,6 +108,26 @@ export default function DashboardApp() {
         // setError(error.response.data);
       });
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    axios({
+      method: 'get',
+      url: `${process.env.REACT_APP_API_URL}/floors`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((result) => {
+        setLoading(false);
+        setFloors(result.data);
+        console.log(result.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const stuff = {
     options: {
       chart: {
@@ -166,21 +189,21 @@ export default function DashboardApp() {
 
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={3} lg={4}>
-              <AppWidgetSummary title="Daily" total={714000} icon={'bi:calendar-day'} />
+              <AppWidgetSummary title="Daily" total={10} color="primary" icon={'bi:calendar-day'} />
             </Grid>
 
             <Grid item xs={12} sm={6} md={3} lg={4}>
-              <AppWidgetSummary title="Weekly" total={1352831} color="info" icon={'bi:calendar-week'} />
+              <AppWidgetSummary title="Weekly" total={12} color="success" icon={'bi:calendar-week'} />
             </Grid>
 
             <Grid item xs={12} sm={6} md={3} lg={4}>
-              <AppWidgetSummary title="Monthly" total={1723315} color="warning" icon={'bi:calendar-month'} />
+              <AppWidgetSummary title="Monthly" total={15} color="warning" icon={'bi:calendar-month'} />
             </Grid>
             <div>
               <NewBarChart />
             </div>
             <Grid item xs={12} md={12} lg={12}>
-              <DashChart
+              {/* <DashChart
                 title="Number of cars on each floor"
                 chartLabels={[
                   '01/01/2003',
@@ -218,27 +241,16 @@ export default function DashboardApp() {
                 chartinfo={stuff}
                 charttype={'bar'}
                 timely={'false'}
-              />
+              /> */}
+              {floors.map((floor) => {
+                console.log(floor);
+                return (
+                  <FloorContext.Provider value={floor.id}>
+                    <Accordian floor={floor} id={floor.id} key={floor.id} />
+                  </FloorContext.Provider>
+                );
+              })}
             </Grid>
-
-            {/* <Grid item xs={12} md={6} lg={4}>
-      <AppCurrentVisits
-        title="Current Visits"
-        chartData={[
-          { label: 'America', value: 4344 },
-          { label: 'Asia', value: 5435 },
-          { label: 'Europe', value: 1443 },
-          { label: 'Africa', value: 4443 },
-        ]}
-        chartColors={[
-          theme.palette.primary.main,
-          theme.palette.chart.blue[0],
-          theme.palette.chart.violet[0],
-          theme.palette.chart.yellow[0],
-        ]}
-      />
-    </Grid> */}
-
             <Grid item xs={12} md={12} lg={12}>
               <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -276,36 +288,7 @@ export default function DashboardApp() {
                   />
                 </TabPanel>
               </Box>
-              {/* <AppConversionRates
-                title="Conversion Rates"
-                subheader="(+43%) than last year"
-                chartData={[
-                  { label: 'Italy', value: 400 },
-                  { label: 'Japan', value: 430 },
-                  { label: 'China', value: 448 },
-                  { label: 'Canada', value: 470 },
-                  { label: 'France', value: 540 },
-                  { label: 'Germany', value: 580 },
-                  { label: 'South Korea', value: 690 },
-                  { label: 'Netherlands', value: 1100 },
-                  { label: 'United States', value: 1200 },
-                  { label: 'United Kingdom', value: 1380 },
-                ]}
-              /> */}
             </Grid>
-            {/* 
-    <Grid item xs={12} md={6} lg={4}>
-      <AppCurrentSubject
-        title="Current Subject"
-        chartLabels={['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math']}
-        chartData={[
-          { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-          { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-          { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] },
-        ]}
-        chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
-      />
-    </Grid> */}
           </Grid>
         </Container>
       )}
