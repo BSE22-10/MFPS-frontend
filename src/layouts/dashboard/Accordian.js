@@ -18,6 +18,9 @@ export default function Accordian(props) {
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [slots, setSlots] = useState([]);
+  const [occupied, setOccupuied] = useState(0);
+  const [available, setAvailable] = useState(0);
+
   const floor = useContext(FloorContext);
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -32,9 +35,16 @@ export default function Accordian(props) {
       },
     })
       .then((result) => {
-        setLoading(false);
         setSlots(result.data);
         console.log(result.data);
+        result.data.map((data) => {
+          if (data.SlotStatus[0].status == true) {
+            setAvailable((available) => available + 1);
+          } else {
+            setOccupuied((occupied) => occupied + 1);
+          }
+        });
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -51,15 +61,6 @@ export default function Accordian(props) {
         <AccordionDetails sx={{ backgroundColor: '#c8c9cb' }}>
           <Typography>| Entrance |</Typography>
           <FloorPlan />
-
-          <Stack spacing={1} alignItems="flex-end">
-            <Stack direction="row" spacing={1}>
-              <Chip label="Available" color="success" />
-            </Stack>
-            <Stack direction="row" spacing={1}>
-              <Chip label="Occupied" color="error" />
-            </Stack>
-          </Stack>
         </AccordionDetails>
       </Accordion>
     </div>
