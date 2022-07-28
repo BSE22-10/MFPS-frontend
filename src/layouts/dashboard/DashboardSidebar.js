@@ -62,11 +62,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        <Typography sx={{ fontWeight: 700 }}>MFPS</Typography>
+        <Typography sx={{ fontSize: 30, fontWeight: 800, paddingLeft: '40px' }}>MFPS</Typography>
         {/* <Logo /> */}
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
+      {/* <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle sx={{ backgroundColor: '#f9f9f9' }}>
             <Avatar src={account.photoURL} alt="photoURL" />
@@ -80,7 +80,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             </Box>
           </AccountStyle>
         </Link>
-      </Box>
+      </Box> */}
 
       <NavSection navConfig={navConfig} />
 
@@ -110,7 +110,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             sx: {
               width: DRAWER_WIDTH,
               bgcolor: 'background.default',
-              borderRightStyle: 'dashed',
+              // borderRightStyle: 'dashed',
             },
           }}
         >
