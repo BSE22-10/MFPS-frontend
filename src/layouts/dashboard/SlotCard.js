@@ -3,7 +3,6 @@ import { Typography, Card, CardContent, Box, Grid, Popover, Modal, Paper } from 
 
 export default function SlotCard(props) {
   const status = props.slot.SlotStatus.length === 0 || props.slot.SlotStatus[0].status === false ? false : true;
-  console.log(props);
   // console.log(props.slot.SlotStatus.length === 0);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClose = () => {
@@ -24,13 +23,13 @@ export default function SlotCard(props) {
   var textColor = 'black';
   if (status === true) {
     cardStyle = {
-      backgroundColor: 'green',
+      backgroundColor: 'red',
       color: '#72C1C6',
     };
     textColor = '#72C1C6';
   } else {
     cardStyle = {
-      backgroundColor: 'red',
+      backgroundColor: 'green',
       color: '6D3D6D',
     };
     textColor = '6D3D6D';
