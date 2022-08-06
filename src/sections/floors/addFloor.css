@@ -1,0 +1,48 @@
+.Programmes{
+    display: flex;
+}
+
+.section-two{
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+.section-one{
+    margin-top: 20px;
+}
+
+.card-content{
+    padding: 50px;
+    margin-bottom: 20px;
+  }
+.card-content h1{
+    text-align: center;
+  }
+.card-content h3{
+    margin-top: 20px;
+}
+
+.formGrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.submitBtn{
+    background-color: #542A52;
+    padding: 10px 50px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .submitBtn:hover{
+    background-color: #6D3D6D;
+  }
+
+  .forms{
+    /* width: max-content; */
+  }
