@@ -34,7 +34,7 @@ export default function Router() {
       element: <Payments />,
     },
     {
-      path: '/homePayment',
+      path: '/homePayment/',
       element: <HomePayment />,
     },
     {
