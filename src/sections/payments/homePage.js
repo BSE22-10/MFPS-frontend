@@ -122,7 +122,19 @@ function HomePayment() {
       })
       // .length(2, 'Provide more values')
       .required('Field is required'),
-    email: yup.string().email('Please enter a valid email').required('This field is required'),
+    email: yup
+      .string()
+      .email('Please enter a valid email')
+      // .required('This field is required', () => {
+      //   console.log('required');
+      //   return false;
+      // }),
+      .test('Top up exclusion', 'Required', (value) => {
+        if (firstTime && value == undefined) {
+          return false;
+        }
+        return true;
+      }),
     // phoneNumber: yup.string().required('Field is required').matches(phone_regex, 'Enter a valid phone number'),
     amount: yup
       .number('Provide a number')
@@ -275,7 +287,7 @@ function HomePayment() {
                     <div className="btn">
                       <div>
                         {/* <button className="btnNext" type="submit"> */}
-                        <Payments value={values} disabled={isValid} />
+                        <Payments value={values} disabled={isValid} register={firstTime} />
                         {/* </button> */}
                         {/* <button className="btnNext" type="submit" >
                           SUBMIT
