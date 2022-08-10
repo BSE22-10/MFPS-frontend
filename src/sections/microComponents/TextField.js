@@ -6,9 +6,6 @@ export const TextField1 = ({ ...props }) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
   var name = props.name;
-  // if(meta.error){
-  //   isetSu
-  // }
   return (
     <div style={{ width: '100%' }}>
       <div style={{ marginBottom: '5px', marginTop: '10px' }}>
