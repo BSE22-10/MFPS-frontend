@@ -67,9 +67,9 @@ function HomePayment() {
   const [firstTime, setFirstTime] = useState(false);
   const [vehicle, setVehicle] = useState([]);
   const [plateError, setPlateError] = useState(true);
-  const checkNumberPlate = async (plate) => {
+  const checkNumberPlate = (plate) => {
     axios({
-      method: 'post',
+      method: 'get',
       url: `${process.env.REACT_APP_API_URL}/accounts/checkPlate`,
       body: {
         number_plate: plate,
@@ -117,7 +117,7 @@ function HomePayment() {
     numberPlate: yup
       .string()
       .test('Checking the number plate', 'Number plate does not exist', async (value) => {
-        await checkNumberPlate(value);
+        checkNumberPlate(value);
         return plateError;
       })
       // .length(2, 'Provide more values')
