@@ -24,7 +24,6 @@ export default function SelectField({ ...props }) {
           <Select
             fullWidth
             as={Select}
-            //  value={props.values.gender}
             defaultValue={props.MenuItems[0]['value']}
             value="Male"
             name={props.name}
