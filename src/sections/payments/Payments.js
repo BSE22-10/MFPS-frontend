@@ -5,6 +5,28 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 
 function Payments(props) {
+  const [userEmail, setEmail] = useState('');
+  const getEmail = (plate) => {
+    axios({
+      method: 'post',
+      url: `${process.env.REACT_APP_API_URL}/accounts/getEmail`,
+      data: {
+        number_plate: `${plate}`,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((data) => {
+        if (data.status == 200) {
+          setEmail(data.data.email);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const updateAccount = (plate, amount) => {
     axios({
       method: 'put',
@@ -29,6 +51,10 @@ function Payments(props) {
   };
   var disabled = props.disabled;
   const { numberPlate, email, amount } = props.value;
+  var register = props.register;
+  {
+    register == false && getEmail(props.value.numberPlate);
+  }
   const config = {
     public_key: 'FLWPUBK_TEST-fd554ed0ef13c68ce40d28394cba5c1f-X',
     tx_ref: Date.now(),
@@ -37,7 +63,7 @@ function Payments(props) {
     payment_options: 'card,mobilemoneyuganda,ussd',
     customer: {
       name: props.value.numberPlate,
-      email: props.value.email,
+      email: register ? props.value.email : userEmail,
       phonenumber: '0771419370',
     },
     customizations: {
@@ -87,6 +113,20 @@ function Payments(props) {
       });
   }
 
+  function topUp() {
+    console.log('Here we are');
+    handleFlutterPayment({
+      callback: (response) => {
+        var plate = response.customer.name.split(' ');
+        console.log(response.customer.name);
+        console.log(response.customer.name.split(' ').slice(0, -1).join(' '));
+        updateAccount(response.customer.name, response.amount);
+        closePaymentModal();
+      },
+      onClose: () => {},
+    });
+  }
+
   const fwConfig = {
     ...config,
     text: 'Pay with Flutterwave!',
@@ -102,7 +142,7 @@ function Payments(props) {
       <button
         disabled={!disabled}
         onClick={() => {
-          console.log('Ypa');
+          console.log('Yap');
           // handleFlutterPayment({
           //   callback: (response) => {
           //     console.log(response.meta);
@@ -110,11 +150,13 @@ function Payments(props) {
           //   },
           //   onClose: () => {},
           // });
-          createAccount();
+          {
+            register ? createAccount() : topUp();
+          }
         }}
         className="btnNext"
       >
-        {props.register ? 'REGISTER' : 'TOP UP'}
+        {register ? 'REGISTER' : 'TOP UP'}
       </button>
     </div>
   );
