@@ -59,7 +59,7 @@ function Payments(props) {
       data: {
         number_plate: numberPlate,
         email: email,
-        amount: amount,
+        amount: 0,
       },
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ function Payments(props) {
         }}
         className="btnNext"
       >
-        REGISTER
+        {props.register ? 'REGISTER' : 'TOP UP'}
       </button>
     </div>
   );
