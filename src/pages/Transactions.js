@@ -104,11 +104,10 @@ export default function Transactions() {
     })
       .then((result) => {
         setLoading(false);
+        console.log(result.data);
         result.data.map((info) => {
-          // setCategory(info.categories);
           setCategories((category) => [...category, info.date]);
-          // setCategory(info.floor_id);
-          setSeries((serie) => [...serie, info.count]);
+          setSeries((serie) => [...serie, info.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')]);
           return true;
         });
         SetTransactions(result.data);
@@ -245,16 +244,6 @@ export default function Transactions() {
                           </TableRow>
                         )}
                       </TableBody>
-
-                      {isUserNotFound && (
-                        <TableBody>
-                          <TableRow>
-                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                              <SearchNotFound searchQuery={filterName} />
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      )}
                     </Table>
                   </TableContainer>
                 </Scrollbar>
