@@ -43,10 +43,34 @@ function AddFloor(props) {
     setAnchorEl(null);
   };
 
+  function createFloor(values) {
+    axios({
+      method: 'post',
+      url: `${process.env.REACT_APP_API_URL}/floors`,
+      data: {
+        no_of_slots: values.no_of_slots,
+        name: values.name,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((data) => {
+        console.log(data);
+        if (data.response == 200) {
+          props.setClosing((closing) => !closing);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   function checkProgramName(value) {}
 
   const validationSchema = yup.object({
-    // qualification: yup.string().required('Required'),
+    no_of_slots: yup.number().required('Required'),
+    name: yup.string().required('Required'),
   });
 
   const closeModal = () => {
@@ -61,12 +85,14 @@ function AddFloor(props) {
     <div style={classes.root}>
       <Formik
         initialValues={{
-          no_of_floors: 0,
+          no_of_slots: 0,
+          name: '',
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           console.log(values);
           //   submitProgram(values);
+          createFloor(values);
         }}
       >
         {({ values, handleChange, handleSubmit, errors, isValidating, isSubmitting, touched }) => (
@@ -105,18 +131,35 @@ function AddFloor(props) {
                   >
                     <div className="form">
                       <h1>Add Floor</h1>
-
-                      <div>
-                        <label htmlFor="firstname">
-                          Number of slots<span className="asterisks">*</span>
-                        </label>
-                        <br />
-
-                        <Grid item xs={12}>
+                      <div className="formGrid">
+                        <div>
+                          <label htmlFor="firstname">
+                            Floor name<span className="asterisks">*</span>
+                          </label>
+                          <br />
                           <div>
                             <TextField1
                               value="Odeke"
-                              name="slotNumber"
+                              name="name"
+                              placeholder="Floor 4"
+                              type="input"
+                              size="small"
+                              fullWidth
+                              sx={{
+                                marginTop: '5px',
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label htmlFor="firstname">
+                            Number of slots<span className="asterisks">*</span>
+                          </label>
+                          <br />
+                          <div>
+                            <TextField1
+                              value="Odeke"
+                              name="no_of_slots"
                               placeholder="5"
                               type="number"
                               size="small"
@@ -126,8 +169,8 @@ function AddFloor(props) {
                               }}
                             />
                           </div>
-                        </Grid>
-                        <br />
+                          <br />
+                        </div>
                       </div>
                       {/* <Box sx={{ 
                 display: 'flex',
