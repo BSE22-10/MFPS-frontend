@@ -46,7 +46,7 @@ function AddFloor(props) {
   function createFloor(values) {
     axios({
       method: 'post',
-      url: `${process.env.REACT_APP_API_URL}/floors`,
+      url: `${process.env.REACT_APP_API_URL}/floors/multipleSlots`,
       data: {
         no_of_slots: values.no_of_slots,
         name: values.name,
