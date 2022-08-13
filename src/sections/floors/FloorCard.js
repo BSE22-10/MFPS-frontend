@@ -207,7 +207,7 @@ export default function FloorCard(props) {
                 }}
               >
                 <Typography sx={new_styles} variant="h5" color="white">
-                  FLOOR {props.floor.id}
+                  {props.floor.name}
                 </Typography>
               </div>
               <MoreHorizIcon
