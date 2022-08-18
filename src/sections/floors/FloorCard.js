@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import UpdateIcon from '@mui/icons-material/Update';
+import DeleteModal from './deleteModal';
 
 export default function FloorCard(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -158,21 +159,21 @@ export default function FloorCard(props) {
         </Box>
       </Modal>
 
-      {/* <Modal
+      <Modal
         open={openModal2}
         onClose={handleCloseModal2}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <MessageModal
-          id={props.program.id}
+        <DeleteModal
+          id={props.floor.id}
           change={setOpen2}
           deleted={props.change}
-          url={`${process.env.REACT_APP_API_URL}/programs/${props.program.id}`}
-          message={'Are you sure you want to delete this programme?'}
+          url={`${process.env.REACT_APP_API_URL}/floors/delete?floor_id=${props.floor.id}`}
+          message={'Are you sure you want to delete this floor?'}
           close={handleCloseModal2}
         />
-      </Modal> */}
+      </Modal>
 
       {/* Modal 3 */}
       <Modal
@@ -206,7 +207,7 @@ export default function FloorCard(props) {
                   cursor: 'pointer',
                 }}
               >
-                <Typography sx={new_styles} variant="h5" color="white">
+                <Typography sx={new_styles} variant="h6" color="white">
                   {props.floor.name}
                 </Typography>
               </div>
