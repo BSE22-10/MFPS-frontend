@@ -11,8 +11,12 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import axios from 'axios';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
+import { CloseContext } from 'src/pages/Floors';
 
 function AddFloor(props) {
+  // const closeContext = useContext(CloseContext);
+  const { close, setClosing } = useContext(CloseContext);
+  console.log(close);
   const classes = {
     root: {
       flexGrow: 1,
@@ -48,7 +52,7 @@ function AddFloor(props) {
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}/floors/multipleSlots`,
       data: {
-        no_of_slots: values.no_of_slots,
+        number_of_slots: values.no_of_slots,
         name: values.name,
       },
       headers: {
