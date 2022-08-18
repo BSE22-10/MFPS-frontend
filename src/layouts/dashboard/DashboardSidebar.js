@@ -58,7 +58,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       sx={{
         height: 1,
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
-        backgroundColor: '#6572E9',
+        // backgroundColor: '#6572E9',
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
