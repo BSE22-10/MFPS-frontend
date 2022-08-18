@@ -55,7 +55,7 @@ export default function Accordian(props) {
     <div>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>{`Floor ${props.floor.id}`}</Typography>
+          <Typography sx={{ width: '33%', flexShrink: 0 }}>{`${props.floor.name}`}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{`${props.floor.no_of_slots} slots`}</Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ backgroundColor: '#c8c9cb' }}>
