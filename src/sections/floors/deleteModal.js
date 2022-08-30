@@ -29,7 +29,6 @@ export default function DeleteModal(props) {
           setSuccess(true);
           setClosing((closing) => !closing);
           props.change(false);
-          props.deleted(true);
         }
       })
       .catch((error) => {
@@ -111,12 +110,12 @@ export default function DeleteModal(props) {
                   sx={{
                     fontSize: '14px',
                     padding: '8px 40px',
-                    color: '#542A52',
+                    color: '#009598',
                     borderRadius: '5px',
                     cursor: 'pointer',
-                    borderColor: '#542A52',
+                    borderColor: '#009598',
                     '&:hover': {
-                      borderColor: '#6D3D6D',
+                      borderColor: '#009598',
                     },
                   }}
                   onClick={() => props.change(false)}
