@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import UpdateIcon from '@mui/icons-material/Update';
 import DeleteModal from './deleteModal';
+import UpdateModal from './updateModal';
 
 export default function FloorCard(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -81,10 +82,10 @@ export default function FloorCard(props) {
   var textColor;
   if (props.count % 2 === 0) {
     cardStyle = {
-      backgroundColor: '#6D3D6D',
+      backgroundColor: '#009598',
       color: '#72C1C6',
     };
-    textColor = '#72C1C6';
+    textColor = 'white';
   } else {
     cardStyle = {
       backgroundColor: '#72C1C6',
@@ -149,13 +150,7 @@ export default function FloorCard(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <UpdateProgramme
-            program={props.program}
-            modal={openModal}
-            close={handleCloseModal}
-            change={props.changes}
-            note={props.note}
-          /> */}
+          <UpdateModal floor={props.floor} modal={openModal} close={handleCloseModal} change={setOpen} />
         </Box>
       </Modal>
 

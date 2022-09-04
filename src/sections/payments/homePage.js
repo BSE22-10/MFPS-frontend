@@ -67,19 +67,17 @@ function HomePayment() {
   const [firstTime, setFirstTime] = useState(false);
   const [vehicle, setVehicle] = useState([]);
   const [plateError, setPlateError] = useState(true);
-  const checkNumberPlate = (plate) => {
+  function checkNumberPlate(plate) {
+    console.log(plate);
     axios({
-      method: 'get',
+      method: 'post',
       url: `${process.env.REACT_APP_API_URL}/accounts/checkPlate`,
       body: {
-        number_plate: plate,
-      },
-      headers: {
-        'Content-Type': 'application/json',
+        number_plate: 'asdasd',
       },
     })
       .then((data) => {
-        console.log(data.status);
+        console.log(data);
         if (data.status === 400) {
           setPlateError(false);
         } else if (data.status === 200) {
@@ -89,7 +87,7 @@ function HomePayment() {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
   const phone_regex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
   const options = [
     { value: '--Choose--', label: '--Choose--' },
@@ -116,7 +114,7 @@ function HomePayment() {
   const validationSchema = yup.object({
     numberPlate: yup
       .string()
-      .test('Checking the number plate', 'Number plate does not exist', async (value) => {
+      .test('Checking the number plate', 'Number plate does not exist', (value) => {
         checkNumberPlate(value);
         return plateError;
       })
@@ -160,34 +158,6 @@ function HomePayment() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          // console.log(values);
-          // const config = {
-          //   public_key: 'FLWPUBK_TEST-fd554ed0ef13c68ce40d28394cba5c1f-X',
-          //   tx_ref: Date.now(),
-          //   amount: values.amount,
-          //   currency: 'UGX',
-          //   payment_options: 'card,mobilemoneyuganda,ussd',
-          //   customer: {
-          //     email: 'user@gmail.com',
-          //     phonenumber: values.phoneNumber,
-          //     number_plate: values.numberPlate,
-          //   },
-          //   customizations: {
-          //     title: 'My store',
-          //     description: 'Payment for items in cart',
-          //     logo: 'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
-          //   },
-          // };
-
-          // const handleFlutterPayment = useFlutterwave(config);
-
-          // handleFlutterPayment({
-          //   callback: (response) => {
-          //     console.log(response);
-          //     closePaymentModal(); // this will close the modal programmatically
-          //   },
-          //   onClose: () => {},
-          // });
           setVehicle({ ...values });
         }}
       >

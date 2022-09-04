@@ -16,7 +16,7 @@ import { CloseContext } from 'src/pages/Floors';
 function AddFloor(props) {
   // const closeContext = useContext(CloseContext);
   const { close, setClosing } = useContext(CloseContext);
-  console.log(close);
+  // console.log(close);
   const classes = {
     root: {
       flexGrow: 1,
@@ -61,8 +61,10 @@ function AddFloor(props) {
     })
       .then((data) => {
         console.log(data);
-        if (data.response == 200) {
-          props.setClosing((closing) => !closing);
+        if (data.status == 200) {
+          console.log('created');
+          setClosing((closing) => !closing);
+          props.change(false);
         }
       })
       .catch((error) => {
@@ -215,13 +217,13 @@ function AddFloor(props) {
                             sx={{
                               fontSize: '14px',
                               padding: '8px 40px',
-                              backgroundColor: '#542A52',
+                              backgroundColor: '#009598',
                               color: 'white',
                               borderRadius: '5px',
                               cursor: 'pointer',
                               border: 'none',
                               '&:hover': {
-                                backgroundColor: '#6D3D6D',
+                                backgroundColor: '#009598',
                               },
                             }}
                           >
@@ -236,13 +238,13 @@ function AddFloor(props) {
                             fontSize: '14px',
                             padding: '8px 40px',
                             // backgroundColor: "#542A52",
-                            color: '#542A52',
+                            color: '#009598',
                             borderRadius: '5px',
                             cursor: 'pointer',
                             // border: "none",
-                            borderColor: '#542A52',
+                            borderColor: '#009598',
                             '&:hover': {
-                              borderColor: '#6D3D6D',
+                              borderColor: '#009598',
                             },
                           }}
                           onClick={() => props.close(false)}

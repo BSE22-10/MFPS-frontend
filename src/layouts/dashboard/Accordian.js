@@ -5,16 +5,13 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState, useContext } from 'react';
-import LinearProgress from '@mui/material/LinearProgress';
-import { Box } from '@mui/material';
 import axios from 'axios';
 import { FloorContext } from 'src/pages/DashboardApp';
 import FloorPlan from './FloorPlan';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import DriverFloorPlan from 'src/sections/@driverParking/DriverPlan';
 
 export default function Accordian(props) {
-  console.log(props);
+  console.log(props.floor.id);
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [slots, setSlots] = useState([]);
@@ -55,12 +52,12 @@ export default function Accordian(props) {
     <div>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>{`${props.floor.name}`}</Typography>
+          <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: '500' }}>{`${props.floor.name}`}</Typography>
           <Typography sx={{ color: 'text.secondary' }}>{`${props.floor.no_of_slots} slots`}</Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ backgroundColor: '#c8c9cb' }}>
           <Typography>| Entrance |</Typography>
-          <FloorPlan />
+          {props.name === 'dashboard' ? <FloorPlan /> : <DriverFloorPlan />}
         </AccordionDetails>
       </Accordion>
     </div>

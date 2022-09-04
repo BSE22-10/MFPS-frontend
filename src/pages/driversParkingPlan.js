@@ -5,7 +5,7 @@ import Accordian from 'src/layouts/dashboard/Accordian';
 import axios from 'axios';
 import Page from '../components/Page';
 import BeatLoader from 'react-spinners/BeatLoader';
-export const FloorContext = createContext();
+export const DriverFloorContext = createContext();
 function DriversParkingPlan() {
   const [floors, setFloors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,12 +48,11 @@ function DriversParkingPlan() {
             <Grid item xs={12} md={12} lg={12}>
               <Typography variant="h4">Floor plan</Typography>
               {floors.map((floor) => {
-                console.log(floor.id);
                 return (
-                  <FloorContext.Provider value={floor.id}>
-                    <Accordian floor={floor} id={floor.id} key={floor.id} />
+                  <DriverFloorContext.Provider value={floor.id}>
+                    <Accordian floor={floor} id={floor.id} key={floor.id} name="drivers" />
                     <br />
-                  </FloorContext.Provider>
+                  </DriverFloorContext.Provider>
                 );
               })}
             </Grid>

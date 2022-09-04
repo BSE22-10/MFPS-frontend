@@ -49,10 +49,10 @@ function UpdateModal(props) {
 
   function createFloor(values) {
     axios({
-      method: 'post',
-      url: `${process.env.REACT_APP_API_URL}/floors/multipleSlots`,
+      method: 'put',
+      url: `${process.env.REACT_APP_API_URL}/floors/update?id=${props.floor.id}`,
       data: {
-        number_of_slots: values.no_of_slots,
+        no_of_slots: values.no_of_slots,
         name: values.name,
       },
       headers: {
@@ -60,9 +60,9 @@ function UpdateModal(props) {
       },
     })
       .then((data) => {
-        console.log(data);
-        if (data.response == 200) {
-          props.setClosing((closing) => !closing);
+        if (data.status == 200) {
+          setClosing((closing) => !closing);
+          props.change((closing) => !closing);
         }
       })
       .catch((error) => {
@@ -89,8 +89,8 @@ function UpdateModal(props) {
     <div style={classes.root}>
       <Formik
         initialValues={{
-          no_of_slots: 0,
-          name: '',
+          no_of_slots: props.floor.no_of_slots,
+          name: props.floor.name,
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
@@ -134,7 +134,7 @@ function UpdateModal(props) {
                     }}
                   >
                     <div className="form">
-                      <h1>Add Floor</h1>
+                      <h1>Update Floor</h1>
                       <div className="formGrid">
                         <div>
                           <label htmlFor="firstname">
@@ -225,7 +225,7 @@ function UpdateModal(props) {
                               },
                             }}
                           >
-                            Add Floor
+                            Update
                           </Button>
                         )}
                       </div>
@@ -236,13 +236,13 @@ function UpdateModal(props) {
                             fontSize: '14px',
                             padding: '8px 40px',
                             // backgroundColor: "#542A52",
-                            color: '#542A52',
+                            color: '#009598',
                             borderRadius: '5px',
                             cursor: 'pointer',
                             // border: "none",
-                            borderColor: '#542A52',
+                            borderColor: '#009598',
                             '&:hover': {
-                              borderColor: '#6D3D6D',
+                              borderColor: '#009598',
                             },
                           }}
                           onClick={() => props.close(false)}

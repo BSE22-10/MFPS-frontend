@@ -13,6 +13,7 @@ function Floors() {
   const [loading, setLoading] = useState(true);
   const [floors, setFloors] = useState();
   const [close, setClosing] = useState(false);
+  console.log(close);
   var count = 0;
   const style = {
     position: 'absolute',
@@ -74,7 +75,7 @@ function Floors() {
                 sx={{
                   fontSize: '14px',
                   padding: '8px 40px',
-                  backgroundColor: '#542A52',
+                  backgroundColor: '#009598',
                   color: 'white',
                   borderRadius: '5px',
                   cursor: 'pointer',
@@ -83,7 +84,7 @@ function Floors() {
                     backgroundColor: '#6D3D6D',
                   },
                 }}
-                className="btnNext"
+                className="btnAddFloor"
                 onClick={handleOpen}
               >
                 Add
@@ -98,7 +99,13 @@ function Floors() {
             aria-describedby="modal-modal-description"
           >
             <Box sx={style} flexGrow={1}>
-              <AddFloor note={changes} changes={setChanges} close={handleClose} setClosing={setClosing} />
+              <AddFloor
+                note={changes}
+                changes={setChanges}
+                close={handleClose}
+                setClosing={setClosing}
+                change={setOpen}
+              />
             </Box>
           </Modal>
           {loading ? (
