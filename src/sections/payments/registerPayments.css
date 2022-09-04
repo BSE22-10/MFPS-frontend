@@ -45,7 +45,7 @@
   }
 
   .btnNext{
-    background-color: #542A52;
+    background-color: #009598;
     padding: 10px 50px;
     font-size: 16px;
     color: white;
@@ -54,7 +54,20 @@
     cursor: pointer;
   }
   .btnNext:hover{
-    background-color: #6D3D6D;
+    background-color: #08cbcf;
+  }
+
+  .btnAddFloor{
+    background-color: #009598;
+    padding: 10px 50px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  .btnNext:hover{
+    background-color: #08cbcf;
   }
   
   
