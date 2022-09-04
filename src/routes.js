@@ -13,6 +13,7 @@ import Transactions from './pages/Transactions';
 import Floors from './pages/Floors';
 import Payments from './sections/payments/Payments';
 import HomePayment from './sections/payments/homePage';
+import DriversParkingPlan from './pages/driversParkingPlan';
 
 // ----------------------------------------------------------------------
 
@@ -40,6 +41,10 @@ export default function Router() {
     {
       path: '/mainPage',
       element: <HomePayment />,
+    },
+    {
+      path: '/driverMap',
+      element: <DriversParkingPlan />,
     },
     {
       path: '/',
