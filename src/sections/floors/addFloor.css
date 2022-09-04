@@ -30,7 +30,7 @@
 }
 
 .submitBtn{
-    background-color: #542A52;
+    background-color: #009598;
     padding: 10px 50px;
     font-size: 16px;
     color: white;
@@ -40,7 +40,7 @@
   }
 
   .submitBtn:hover{
-    background-color: #6D3D6D;
+    background-color: #08cbcf;
   }
 
   .forms{
