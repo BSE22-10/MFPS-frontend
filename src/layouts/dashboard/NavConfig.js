@@ -23,8 +23,13 @@ const navConfig = [
   // },
   {
     title: 'transactions',
-    path: '/dashboard/user',
+    path: '/dashboard/transactions',
     icon: getIcon('eva:file-text-fill'),
+  },
+  {
+    title: 'floors',
+    path: '/dashboard/floors',
+    icon: getIcon('eva:car-fill'),
   },
   {
     title: 'logout',
