@@ -27,6 +27,7 @@ import {
   AppConversionRates,
   NewBarChart,
 } from '../sections/@dashboard/app';
+import DriversParkingPlan from './driversParkingPlan';
 
 // ----------------------------------------------------------------------
 var categories = [];
@@ -243,11 +244,12 @@ export default function DashboardApp() {
                 charttype={'bar'}
                 timely={'false'}
               /> */}
+              {/* <DriversParkingPlan/> */}
               {floors.map((floor) => {
                 console.log(floor);
                 return (
                   <FloorContext.Provider value={floor.id}>
-                    <Accordian floor={floor} id={floor.id} key={floor.id} />
+                    <Accordian floor={floor} id={floor.id} key={floor.id} name="dashboard" />
                     <br />
                   </FloorContext.Provider>
                 );
