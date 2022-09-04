@@ -1,0 +1,61 @@
+/* Format for the FormContainer */
+.form-container{
+    width: 50%;
+    background-color: white;
+    padding: 20px 0px;
+    margin: 50px auto;
+    border-radius: 15px;
+    box-shadow: 3px 5px 30px -10px rgba(0,0,0,0.50);
+    -webkit-box-shadow: 3px 5px 30px -10px rgba(0,0,0,0.50);
+    -moz-box-shadow: 3px 5px 30px -10px rgba(0,0,0,0.50);
+  }
+  
+  .asterisks{
+    color: red;
+  }
+
+  .form-container h1{
+    text-align: center;
+  }
+  .Instructions{
+    font-size: 12px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+  }
+  .Instructions span{
+    color: red;
+  }
+  /* Format for the FormInput */
+  .btn-main {
+    text-align: right;
+  }
+  .btn-main button{
+    background-color: #542A52;
+    padding: 10px 50px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 50px;
+  }
+  .btn-main button:hover{
+    background-color: #6D3D6D;
+  }
+
+  .btnNext{
+    background-color: #542A52;
+    padding: 10px 50px;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  .btnNext:hover{
+    background-color: #6D3D6D;
+  }
+  
+  
+  

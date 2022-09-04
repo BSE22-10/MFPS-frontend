@@ -6,10 +6,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState, useEffect } from 'react';
-// import MessageModal from './microComponents/MessageModal';
 import { Link } from 'react-router-dom';
-// import './programCard.css';
 import UpdateIcon from '@mui/icons-material/Update';
+import DeleteModal from './deleteModal';
 
 export default function FloorCard(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -119,15 +118,6 @@ export default function FloorCard(props) {
     },
   };
 
-  const program_descrition = (theme) => ({
-    root: {
-      name: props.description,
-      [theme.breakpoints.up('md')]: {
-        name: props.description.split(0, 26),
-      },
-    },
-  });
-
   const style = {
     position: 'absolute',
     top: '50%',
@@ -159,31 +149,31 @@ export default function FloorCard(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <UpdateProgramme
+          {/* <UpdateProgramme
             program={props.program}
             modal={openModal}
             close={handleCloseModal}
             change={props.changes}
             note={props.note}
-          />
+          /> */}
         </Box>
       </Modal>
 
-      {/* <Modal
+      <Modal
         open={openModal2}
         onClose={handleCloseModal2}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <MessageModal
-          id={props.program.id}
+        <DeleteModal
+          id={props.floor.id}
           change={setOpen2}
           deleted={props.change}
-          url={`${process.env.REACT_APP_API_URL}/programs/${props.program.id}`}
-          message={'Are you sure you want to delete this programme?'}
+          url={`${process.env.REACT_APP_API_URL}/floors/delete?floor_id=${props.floor.id}`}
+          message={'Are you sure you want to delete this floor?'}
           close={handleCloseModal2}
         />
-      </Modal> */}
+      </Modal>
 
       {/* Modal 3 */}
       <Modal
@@ -193,17 +183,17 @@ export default function FloorCard(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ViewProgramme
+          {/* <ViewProgramme
             program={props.program}
             modal={openModal}
             close={handleCloseModal}
             change={props.changes}
             note={props.note}
-          />
+          /> */}
         </Box>
       </Modal>
 
-      <Paper style={cardStyle} sx={{ height: 200 }}>
+      <Paper style={cardStyle} sx={{ height: 130 }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             <Box
@@ -212,17 +202,15 @@ export default function FloorCard(props) {
                 justifyContent: 'space-between',
               }}
             >
-              <Link to={`/AdminDashboard/intakes/${props.program.id}/${props.program.name}`} className="link">
-                <div
-                  sx={{
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Typography sx={new_styles} variant="h5" color="white">
-                    {props.program.name}
-                  </Typography>
-                </div>
-              </Link>
+              <div
+                sx={{
+                  cursor: 'pointer',
+                }}
+              >
+                <Typography sx={new_styles} variant="h6" color="white">
+                  {props.floor.name}
+                </Typography>
+              </div>
               <MoreHorizIcon
                 sx={{
                   cursor: 'pointer',
@@ -269,7 +257,7 @@ export default function FloorCard(props) {
                 pointer: 'cursor',
               }}
             ></Box>
-            <p style={{ color: textColor }}>{description}</p>
+            <p style={{ color: textColor }}>{props.floor.no_of_slots} slots</p>
           </Typography>
         </CardContent>
       </Paper>

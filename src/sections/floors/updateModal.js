@@ -13,7 +13,7 @@ import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
 import { CloseContext } from 'src/pages/Floors';
 
-function AddFloor(props) {
+function UpdateModal(props) {
   // const closeContext = useContext(CloseContext);
   const { close, setClosing } = useContext(CloseContext);
   console.log(close);
@@ -262,4 +262,4 @@ function AddFloor(props) {
   );
 }
 
-export default AddFloor;
+export default UpdateModal;

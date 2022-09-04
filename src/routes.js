@@ -11,6 +11,8 @@ import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Transactions from './pages/Transactions';
 import Floors from './pages/Floors';
+import Payments from './sections/payments/Payments';
+import HomePayment from './sections/payments/homePage';
 
 // ----------------------------------------------------------------------
 
@@ -21,17 +23,29 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'app', element: <DashboardApp /> },
-        { path: 'user', element: <Transactions /> },
+        { path: 'transactions', element: <Transactions /> },
         { path: 'products', element: <Products /> },
+        { path: 'floors', element: <Floors /> },
         { path: 'blog', element: <Blog /> },
       ],
+    },
+    {
+      path: '/payment',
+      element: <Payments />,
+    },
+    {
+      path: '/homePayment/',
+      element: <HomePayment />,
+    },
+    {
+      path: '/mainPage',
+      element: <HomePayment />,
     },
     {
       path: '/',
       element: <LogoOnlyLayout />,
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" /> },
-        { path: 'floors', element: <Floors /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: '404', element: <NotFound /> },

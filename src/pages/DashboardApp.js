@@ -203,6 +203,7 @@ export default function DashboardApp() {
               <NewBarChart />
             </div>
             <Grid item xs={12} md={12} lg={12}>
+              <Typography variant="h4">Floor plan</Typography>
               {/* <DashChart
                 title="Number of cars on each floor"
                 chartLabels={[
@@ -247,6 +248,7 @@ export default function DashboardApp() {
                 return (
                   <FloorContext.Provider value={floor.id}>
                     <Accordian floor={floor} id={floor.id} key={floor.id} />
+                    <br />
                   </FloorContext.Provider>
                 );
               })}
