@@ -107,14 +107,17 @@ export default function Transactions() {
         console.log(result.data);
         result.data.map((info) => {
           setCategories((category) => [...category, info.date]);
-          setSeries((serie) => [...serie, info.count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')]);
+          setSeries((serie) => [
+            ...serie,
+            info.count.toString(),
+            // .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          ]);
           return true;
         });
         SetTransactions(result.data);
       })
       .catch((error) => {
         console.log(error);
-        // setError(error.response.data);
       });
   }, []);
 
