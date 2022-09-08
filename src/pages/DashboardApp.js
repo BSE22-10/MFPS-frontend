@@ -14,6 +14,9 @@ import axios from 'axios';
 import Page from '../components/Page';
 import Accordian from 'src/layouts/dashboard/Accordian';
 import Iconify from '../components/Iconify';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import checkToken from 'src/services/checkLoggedInUser';
 // sections
 import {
   AppTasks,
@@ -71,6 +74,8 @@ function a11yProps(index) {
 // const [setCategory, category] = useState();
 // const [setSeries, series] = useState();
 export default function DashboardApp() {
+  const navigate = useNavigate();
+  checkToken();
   const isMounted = useRef(false);
   const [value, setValue] = React.useState(0);
 
