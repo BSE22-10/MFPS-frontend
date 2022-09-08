@@ -6,10 +6,12 @@ import axios from 'axios';
 import BeatLoader from 'react-spinners/BeatLoader';
 import AddFloor from 'src/sections/floors/AddFloor';
 import FloorCard from 'src/sections/floors/FloorCard';
+import checkToken from 'src/services/checkLoggedInUser';
 
 export const CloseContext = createContext();
 
 function Floors() {
+  checkToken();
   const [loading, setLoading] = useState(true);
   const [floors, setFloors] = useState();
   const [close, setClosing] = useState(false);
