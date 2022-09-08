@@ -7,6 +7,8 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@
 import MenuPopover from '../../components/MenuPopover';
 // mocks_
 import account from '../../_mock/account';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +34,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const anchorRef = useRef(null);
-
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -41,6 +43,8 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+    Cookies.remove('token');
+    navigate('/login', { replace: true });
   };
 
   return (
