@@ -2,7 +2,7 @@ import React from 'react';
 import './registerPayments.css';
 import { Formik } from 'formik';
 import { useContext, useState } from 'react';
-import { Card, Grid, Box } from '@mui/material';
+import { Card, Grid, Box, Modal } from '@mui/material';
 import * as yup from 'yup';
 import axios from 'axios';
 import { TextField1 } from '../microComponents/TextField';
@@ -14,6 +14,10 @@ import RegisterPayment from './RegisterPayment';
 import { useFlutterwave, FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3';
 import SelectField from '../microComponents/SelectField';
 import Payments from './Payments';
+import { createContext } from 'react';
+import Summary from './Summary';
+
+export const summaryContext = createContext();
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -64,9 +68,13 @@ async function createAccount() {
 }
 
 function HomePayment() {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [firstTime, setFirstTime] = useState(false);
   const [vehicle, setVehicle] = useState([]);
   const [plateError, setPlateError] = useState(true);
+  const [viewSummary, setViewSummary] = useState(false);
   function checkNumberPlate(plate) {
     console.log(plate);
     axios({
@@ -94,7 +102,26 @@ function HomePayment() {
     { value: 'First time', label: 'First time' },
     { value: 'Top up', label: 'Top up' },
   ];
-
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: {
+      xs: 450, //0
+      sm: 600, // 600
+      md: 700, // 900
+      lg: 800, // 1200
+      xl: 1000, // 1536
+    },
+    display: 'flex',
+    flexDirection: 'column',
+    // bgcolor: 'background.paper',
+    // border: '2px solid #000',
+    // boxShadow: 24,
+    p: 0,
+    marginTop: 1,
+  };
   function validateSelect(value) {
     let error;
     if (!value) {
@@ -148,6 +175,16 @@ function HomePayment() {
 
   return (
     <div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} flexGrow={1}>
+          <Summary close={handleClose} />
+        </Box>
+      </Modal>
       <Formik
         initialValues={{
           numberPlate: '',
@@ -158,7 +195,10 @@ function HomePayment() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          setViewSummary(true);
           setVehicle({ ...values });
+          console.log(vehicle);
+          handleOpen();
         }}
       >
         {({ values, handleSubmit, errors, isValidating, isSubmitting, touched, isValid }) => (
@@ -257,11 +297,11 @@ function HomePayment() {
                     <div className="btn">
                       <div>
                         {/* <button className="btnNext" type="submit"> */}
-                        <Payments value={values} disabled={isValid} register={firstTime} />
+                        {/* <Payments value={values} disabled={isValid} register={firstTime} /> */}
                         {/* </button> */}
-                        {/* <button className="btnNext" type="submit" >
+                        <button className="btnNext" type="submit">
                           SUBMIT
-                        </button> */}
+                        </button>
                       </div>
                     </div>
                   </Grid>
