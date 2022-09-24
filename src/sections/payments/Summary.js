@@ -4,8 +4,10 @@ import { LoadingButton } from '@mui/lab';
 import { useState } from 'react';
 import { useContext } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
+import Payments from './Payments';
 
-function Summary() {
+function Summary(props) {
+  console.log(props.register);
   var buttonStatus;
   const [submitting, setSubmitting] = useState(null);
   const style = {
@@ -55,7 +57,7 @@ function Summary() {
     // }, 1000);
 
     // submitData(params.program_id, params.intake_id);
-    submitApplication();
+    // submitApplication();
   };
   return (
     <div>
@@ -83,25 +85,26 @@ function Summary() {
                       Please confirm your details
                     </Typography>
                     {submitting === null && (
-                      <Button onClick={() => console.log(1)}>
+                      <Button onClick={() => props.close(false)}>
                         <EditIcon />
                         Edit
                       </Button>
                     )}
                   </Box>
                   <Divider />
-
-                  <Box style={style}>
-                    <span>Email:</span> <p>trevodex@gmail.com</p>
-                  </Box>
+                  {props.register && (
+                    <Box style={style}>
+                      <span>Email:</span> <p>{props.values.email}</p>
+                    </Box>
+                  )}
 
                   <Box style={style}>
                     <span>Number plate:</span>
-                    <p>UAS DFDFG</p>
+                    <p>{props.values.numberPlate}</p>
                   </Box>
 
                   <Box style={style}>
-                    <span>Amount:</span> <p>34 UGX</p>
+                    <span>Amount:</span> <p>{props.values.amount} UGX</p>
                   </Box>
 
                   <Divider />
@@ -129,7 +132,8 @@ function Summary() {
                                         </LoadingButton>) : (
                                      <button className='btnNext' type='submit'>Submit</button>
                                 )} */}
-                  {buttonStatus}
+                  {/* {buttonStatus} */}
+                  <Payments value={props.values} register={props.register} />
                 </div>
               </div>
             </Card>
