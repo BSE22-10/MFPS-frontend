@@ -74,26 +74,33 @@ function HomePayment() {
   const [firstTime, setFirstTime] = useState(false);
   const [vehicle, setVehicle] = useState([]);
   const [plateError, setPlateError] = useState(true);
+  const [firstTimeplateError, setfirstTimePlateError] = useState(true);
   const [viewSummary, setViewSummary] = useState(false);
-  function checkNumberPlate(plate) {
+  async function checkNumberPlate(plate) {
     console.log(plate);
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}/accounts/checkPlate`,
-      body: {
-        number_plate: 'asdasd',
+      data: {
+        number_plate: plate,
       },
     })
       .then((data) => {
         console.log(data);
-        if (data.status === 400) {
-          setPlateError(false);
-        } else if (data.status === 200) {
+        if (data.status === 200) {
           setPlateError(true);
+          setfirstTimePlateError(true);
+          if (firstTime === true) {
+            console.log('First time');
+            setfirstTimePlateError(false);
+          }
         }
       })
       .catch((error) => {
-        console.log(error);
+        if (firstTime === false) {
+          setPlateError(false);
+          setfirstTimePlateError(true);
+        }
       });
   }
   const phone_regex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
@@ -122,7 +129,9 @@ function HomePayment() {
     p: 0,
     marginTop: 1,
   };
+  //Validating select fields
   function validateSelect(value) {
+    console.log(value);
     let error;
     if (!value) {
       error = 'Required';
@@ -138,12 +147,17 @@ function HomePayment() {
     return error;
   }
   //   const formik = useFormik;
+  // Validation schema for forms
   const validationSchema = yup.object({
     numberPlate: yup
       .string()
-      .test('Checking the number plate', 'Number plate does not exist', (value) => {
-        checkNumberPlate(value);
+      .test('Checking the number plate', 'Number plate does not exist', async (value) => {
+        await checkNumberPlate(value);
         return plateError;
+      })
+      .test('Checking if plate is registered', 'Number plate registered', async (value) => {
+        await checkNumberPlate(value);
+        return firstTimeplateError;
       })
       // .length(2, 'Provide more values')
       .required('Field is required'),
@@ -182,7 +196,7 @@ function HomePayment() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} flexGrow={1}>
-          <Summary close={handleClose} />
+          <Summary close={handleClose} values={vehicle} register={firstTime} />
         </Box>
       </Modal>
       <Formik
