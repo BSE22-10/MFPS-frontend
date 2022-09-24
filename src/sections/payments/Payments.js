@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 
 function Payments(props) {
+  // console.log(props.value);
   const [userEmail, setEmail] = useState('');
   const getEmail = (plate) => {
     axios({
@@ -51,6 +52,7 @@ function Payments(props) {
   };
   var disabled = props.disabled;
   const { numberPlate, email, amount } = props.value;
+  console.log(numberPlate);
   var register = props.register;
   {
     register == false && getEmail(props.value.numberPlate);
@@ -140,7 +142,7 @@ function Payments(props) {
     <div className="App">
       {/* <FlutterWaveButton {...fwConfig} /> */}
       <button
-        disabled={!disabled}
+        // disabled={!disabled}
         onClick={() => {
           console.log('Yap');
           // handleFlutterPayment({
