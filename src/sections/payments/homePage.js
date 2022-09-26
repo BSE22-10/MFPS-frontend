@@ -16,8 +16,9 @@ import SelectField from '../microComponents/SelectField';
 import Payments from './Payments';
 import { createContext } from 'react';
 import Summary from './Summary';
+import Alert from '@mui/material/Alert';
 
-export const summaryContext = createContext();
+export const SummaryContext = createContext();
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -67,6 +68,10 @@ async function createAccount() {
     });
 }
 
+function refreshPage() {
+  window.location.reload(false);
+}
+
 function HomePayment() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -76,6 +81,9 @@ function HomePayment() {
   const [plateError, setPlateError] = useState(true);
   const [firstTimeplateError, setfirstTimePlateError] = useState(true);
   const [viewSummary, setViewSummary] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  // const numberPlate = /^[U|C][A-Z][A-Z]? (\d{3})([A-Z]?\d?[A-Z]?[A-Z]?)(?!\d)/;
+  const numberPlate = /^[U][A-Z]{1,2} [1-9]{1,4}[A-Z]{1,2}/;
   async function checkNumberPlate(plate) {
     console.log(plate);
     axios({
@@ -86,21 +94,22 @@ function HomePayment() {
       },
     })
       .then((data) => {
-        console.log(data);
-        if (data.status === 200) {
-          setPlateError(true);
-          setfirstTimePlateError(true);
+        console.log(data.status);
+        if (data.status === 200 && plate != undefined) {
+          // setfirstTimePlateError(true);
           if (firstTime === true) {
-            console.log('First time');
+            console.log('Checking');
+            setPlateError(true);
             setfirstTimePlateError(false);
           }
         }
       })
       .catch((error) => {
         if (firstTime === false) {
+          console.log('Checking top up');
           setPlateError(false);
-          setfirstTimePlateError(true);
         }
+        setfirstTimePlateError(true);
       });
   }
   const phone_regex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
@@ -139,8 +148,10 @@ function HomePayment() {
       setFirstTime(true);
       error = 'Please select';
     } else if (value === 'Top up') {
+      setfirstTimePlateError(true);
       setFirstTime(false);
     } else {
+      setPlateError(true);
       setFirstTime(true);
       error = '';
     }
@@ -151,6 +162,8 @@ function HomePayment() {
   const validationSchema = yup.object({
     numberPlate: yup
       .string()
+      .matches(numberPlate, 'Provide a valid number plate')
+      .max(8, 'Please provide a valid number plate')
       .test('Checking the number plate', 'Number plate does not exist', async (value) => {
         await checkNumberPlate(value);
         return plateError;
@@ -196,7 +209,9 @@ function HomePayment() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} flexGrow={1}>
-          <Summary close={handleClose} values={vehicle} register={firstTime} />
+          <SummaryContext.Provider value={{ setPaymentSuccess, handleClose }}>
+            <Summary close={handleClose} values={vehicle} register={firstTime} />
+          </SummaryContext.Provider>
         </Box>
       </Modal>
       <Formik
@@ -234,6 +249,7 @@ function HomePayment() {
                   }}
                 >
                   <Grid item xs={12}>
+                    {paymentSuccess && <Alert onClose={() => refreshPage()}>Payment successfull</Alert>}
                     <h1>Payment</h1>
                     <br />
                     {/* <form onSubmit={handleSubmit} method="POST"> */}
