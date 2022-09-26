@@ -297,6 +297,14 @@ export default function DashboardApp() {
                   />
                 </TabPanel>
               </Box>
+              <h2>Hello</h2>
+              <DashChart
+                title="Number of cars on each floor"
+                chartinfo={stuff}
+                charttype={'line'}
+                timely={'false'}
+                duration={'floor'}
+              />
             </Grid>
           </Grid>
         </Container>
