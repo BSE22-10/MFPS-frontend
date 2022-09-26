@@ -133,7 +133,7 @@ function Summary(props) {
                                      <button className='btnNext' type='submit'>Submit</button>
                                 )} */}
                   {/* {buttonStatus} */}
-                  <Payments value={props.values} register={props.register} />
+                  <Payments value={props.values} register={props.register} close={props.close} />
                 </div>
               </div>
             </Card>
