@@ -3,9 +3,11 @@ import { useFlutterwave, FlutterWaveButton, closePaymentModal } from 'flutterwav
 import './registerPayments.css';
 import axios from 'axios';
 import { useContext, useState } from 'react';
+import { SummaryContext } from './homePage';
 
 function Payments(props) {
   // console.log(props.value);
+  const { setPaymentSuccess, handleClose } = useContext(SummaryContext);
   const [userEmail, setEmail] = useState('');
   const getEmail = (plate) => {
     axios({
@@ -98,6 +100,8 @@ function Payments(props) {
         if (data.status == 200) {
           handleFlutterPayment({
             callback: (response) => {
+              setPaymentSuccess(true);
+              handleClose(false);
               var plate = response.customer.name.split(' ');
               // console.log(plate.at(-1));
               // console.log(response.customer.name.split(' '));
@@ -119,6 +123,8 @@ function Payments(props) {
     console.log('Here we are');
     handleFlutterPayment({
       callback: (response) => {
+        setPaymentSuccess(true);
+        handleClose(false);
         var plate = response.customer.name.split(' ');
         console.log(response.customer.name);
         console.log(response.customer.name.split(' ').slice(0, -1).join(' '));
