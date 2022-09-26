@@ -11,8 +11,6 @@ import Logo from '../components/Logo';
 import { LoginForm } from '../sections/auth/login';
 import AuthSocial from '../sections/auth/AuthSocial';
 
-// ----------------------------------------------------------------------
-
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',

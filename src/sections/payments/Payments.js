@@ -3,8 +3,11 @@ import { useFlutterwave, FlutterWaveButton, closePaymentModal } from 'flutterwav
 import './registerPayments.css';
 import axios from 'axios';
 import { useContext, useState } from 'react';
+import { SummaryContext } from './homePage';
 
 function Payments(props) {
+  // console.log(props.value);
+  const { setPaymentSuccess, handleClose } = useContext(SummaryContext);
   const [userEmail, setEmail] = useState('');
   const getEmail = (plate) => {
     axios({
@@ -51,6 +54,7 @@ function Payments(props) {
   };
   var disabled = props.disabled;
   const { numberPlate, email, amount } = props.value;
+  console.log(numberPlate);
   var register = props.register;
   {
     register == false && getEmail(props.value.numberPlate);
@@ -96,6 +100,8 @@ function Payments(props) {
         if (data.status == 200) {
           handleFlutterPayment({
             callback: (response) => {
+              setPaymentSuccess(true);
+              handleClose(false);
               var plate = response.customer.name.split(' ');
               // console.log(plate.at(-1));
               // console.log(response.customer.name.split(' '));
@@ -117,6 +123,8 @@ function Payments(props) {
     console.log('Here we are');
     handleFlutterPayment({
       callback: (response) => {
+        setPaymentSuccess(true);
+        handleClose(false);
         var plate = response.customer.name.split(' ');
         console.log(response.customer.name);
         console.log(response.customer.name.split(' ').slice(0, -1).join(' '));
@@ -140,7 +148,7 @@ function Payments(props) {
     <div className="App">
       {/* <FlutterWaveButton {...fwConfig} /> */}
       <button
-        disabled={!disabled}
+        // disabled={!disabled}
         onClick={() => {
           console.log('Yap');
           // handleFlutterPayment({

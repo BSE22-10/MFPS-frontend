@@ -69,6 +69,16 @@
   .btnNext:hover{
     background-color: #08cbcf;
   }
+  .card-content{
+    padding: 50px;
+    margin-bottom: 20px;
+  }
+.card-content h1{
+    text-align: center;
+  }
+.card-content h3{
+    margin-top: 20px;
+}
   
   
   

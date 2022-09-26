@@ -32,6 +32,7 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashbo
 import { DashChart } from '../sections/@dashboard/app';
 // mock
 import USERLIST from '../_mock/user';
+import checkToken from 'src/services/checkLoggedInUser';
 
 // ----------------------------------------------------------------------
 
@@ -76,6 +77,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Transactions() {
+  checkToken();
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');

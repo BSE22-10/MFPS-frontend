@@ -115,6 +115,75 @@ export default function DashChart({
     };
     chartOptions = items2.options;
     chartSeries = items2.series;
+  } else {
+    useEffect(() => {
+      setLoading(true);
+      axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_API_URL}/slots/timelyData?duration=${duration}`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((result) => {
+          setLoading(false);
+          result.data.map((info) => {
+            categories.push(info.floor);
+            setCategory((category) => [...category, info.floor]);
+            setSerie((serie) => [...serie, info.count]);
+            // setCategory(info.categories);
+            // setCategory((category) => {
+            //   category.push(info.floor_id);
+            // });
+            series.push(info.count);
+            return true;
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          // setError(error.response.data);
+        });
+    }, []);
+    const items2 = {
+      options: {
+        chart: {
+          id: 'basic-bar',
+        },
+        xaxis: {
+          categories: category,
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: true,
+              color: 'inherit',
+            },
+            // labels: {
+            //   style: {
+            //     colors: '#FF1654',
+            //   },
+            // },
+            title: {
+              text: 'Number of cars',
+              // style: {
+              //   color: '#FF1654',
+              // },
+            },
+          },
+        ],
+      },
+      series: [
+        {
+          name: 'Number of cars',
+          data: serie,
+        },
+      ],
+    };
+    chartOptions = items2.options;
+    chartSeries = items2.series;
   }
 
   // setCategories(chartinfo.options.xaxis.categories.categories);

@@ -2,7 +2,7 @@ import React from 'react';
 import './registerPayments.css';
 import { Formik } from 'formik';
 import { useContext, useState } from 'react';
-import { Card, Grid, Box } from '@mui/material';
+import { Card, Grid, Box, Modal } from '@mui/material';
 import * as yup from 'yup';
 import axios from 'axios';
 import { TextField1 } from '../microComponents/TextField';
@@ -14,6 +14,11 @@ import RegisterPayment from './RegisterPayment';
 import { useFlutterwave, FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3';
 import SelectField from '../microComponents/SelectField';
 import Payments from './Payments';
+import { createContext } from 'react';
+import Summary from './Summary';
+import Alert from '@mui/material/Alert';
+
+export const SummaryContext = createContext();
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -63,29 +68,48 @@ async function createAccount() {
     });
 }
 
+function refreshPage() {
+  window.location.reload(false);
+}
+
 function HomePayment() {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [firstTime, setFirstTime] = useState(false);
   const [vehicle, setVehicle] = useState([]);
   const [plateError, setPlateError] = useState(true);
-  function checkNumberPlate(plate) {
+  const [firstTimeplateError, setfirstTimePlateError] = useState(true);
+  const [viewSummary, setViewSummary] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  // const numberPlate = /^[U|C][A-Z][A-Z]? (\d{3})([A-Z]?\d?[A-Z]?[A-Z]?)(?!\d)/;
+  const numberPlate = /^[U][A-Z]{1,2} [1-9]{1,4}[A-Z]{1,2}/;
+  async function checkNumberPlate(plate) {
     console.log(plate);
     axios({
       method: 'post',
       url: `${process.env.REACT_APP_API_URL}/accounts/checkPlate`,
-      body: {
-        number_plate: 'asdasd',
+      data: {
+        number_plate: plate,
       },
     })
       .then((data) => {
-        console.log(data);
-        if (data.status === 400) {
-          setPlateError(false);
-        } else if (data.status === 200) {
-          setPlateError(true);
+        console.log(data.status);
+        if (data.status === 200 && plate != undefined) {
+          // setfirstTimePlateError(true);
+          if (firstTime === true) {
+            console.log('Checking');
+            setPlateError(true);
+            setfirstTimePlateError(false);
+          }
         }
       })
       .catch((error) => {
-        console.log(error);
+        if (firstTime === false) {
+          console.log('Checking top up');
+          setPlateError(false);
+        }
+        setfirstTimePlateError(true);
       });
   }
   const phone_regex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
@@ -94,8 +118,29 @@ function HomePayment() {
     { value: 'First time', label: 'First time' },
     { value: 'Top up', label: 'Top up' },
   ];
-
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: {
+      xs: 450, //0
+      sm: 600, // 600
+      md: 700, // 900
+      lg: 800, // 1200
+      xl: 1000, // 1536
+    },
+    display: 'flex',
+    flexDirection: 'column',
+    // bgcolor: 'background.paper',
+    // border: '2px solid #000',
+    // boxShadow: 24,
+    p: 0,
+    marginTop: 1,
+  };
+  //Validating select fields
   function validateSelect(value) {
+    console.log(value);
     let error;
     if (!value) {
       error = 'Required';
@@ -103,20 +148,29 @@ function HomePayment() {
       setFirstTime(true);
       error = 'Please select';
     } else if (value === 'Top up') {
+      setfirstTimePlateError(true);
       setFirstTime(false);
     } else {
+      setPlateError(true);
       setFirstTime(true);
       error = '';
     }
     return error;
   }
   //   const formik = useFormik;
+  // Validation schema for forms
   const validationSchema = yup.object({
     numberPlate: yup
       .string()
-      .test('Checking the number plate', 'Number plate does not exist', (value) => {
-        checkNumberPlate(value);
+      .matches(numberPlate, 'Provide a valid number plate')
+      .max(8, 'Please provide a valid number plate')
+      .test('Checking the number plate', 'Number plate does not exist', async (value) => {
+        await checkNumberPlate(value);
         return plateError;
+      })
+      .test('Checking if plate is registered', 'Number plate registered', async (value) => {
+        await checkNumberPlate(value);
+        return firstTimeplateError;
       })
       // .length(2, 'Provide more values')
       .required('Field is required'),
@@ -148,6 +202,18 @@ function HomePayment() {
 
   return (
     <div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} flexGrow={1}>
+          <SummaryContext.Provider value={{ setPaymentSuccess, handleClose }}>
+            <Summary close={handleClose} values={vehicle} register={firstTime} />
+          </SummaryContext.Provider>
+        </Box>
+      </Modal>
       <Formik
         initialValues={{
           numberPlate: '',
@@ -158,7 +224,10 @@ function HomePayment() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          setViewSummary(true);
           setVehicle({ ...values });
+          console.log(vehicle);
+          handleOpen();
         }}
       >
         {({ values, handleSubmit, errors, isValidating, isSubmitting, touched, isValid }) => (
@@ -180,6 +249,7 @@ function HomePayment() {
                   }}
                 >
                   <Grid item xs={12}>
+                    {paymentSuccess && <Alert onClose={() => refreshPage()}>Payment successfull</Alert>}
                     <h1>Payment</h1>
                     <br />
                     {/* <form onSubmit={handleSubmit} method="POST"> */}
@@ -257,11 +327,11 @@ function HomePayment() {
                     <div className="btn">
                       <div>
                         {/* <button className="btnNext" type="submit"> */}
-                        <Payments value={values} disabled={isValid} register={firstTime} />
+                        {/* <Payments value={values} disabled={isValid} register={firstTime} /> */}
                         {/* </button> */}
-                        {/* <button className="btnNext" type="submit" >
+                        <button className="btnNext" type="submit">
                           SUBMIT
-                        </button> */}
+                        </button>
                       </div>
                     </div>
                   </Grid>
