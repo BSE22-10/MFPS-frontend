@@ -17,6 +17,8 @@ export default function Accordian(props) {
   const [slots, setSlots] = useState([]);
   const [occupied, setOccupuied] = useState(0);
   const [available, setAvailable] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isFull, setIsFull] = useState(false);
 
   const floor = useContext(FloorContext);
   const handleChange = (panel) => (event, isExpanded) => {
@@ -48,18 +50,45 @@ export default function Accordian(props) {
       });
   }, []);
 
+  useEffect(() => {
+    // localhost:8000/floors/checkFullParking
+    setInterval(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+    setLoading(true);
+
+      axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_API_URL}/floors/checkFullParking`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((result) => {
+          console.log(result.data.status)
+          setIsFull(result.data.status);
+          // setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }, [timeLeft]);
+
   return (
     <div>
+      {/* {isFull && props.name != "dashboard" ? <Typography variant='h3' sx={{color: 'red'}}>PARKING FULL</Typography> :  */}
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
-          <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: '500' }}>{`${props.floor.name}`}</Typography>
-          <Typography sx={{ color: 'text.secondary' }}>{`${props.floor.no_of_slots} slots`}</Typography>
-        </AccordionSummary>
-        <AccordionDetails sx={{ backgroundColor: '#c8c9cb' }}>
-          <Typography>| Entrance |</Typography>
-          {props.name === 'dashboard' ? <FloorPlan /> : <DriverFloorPlan />}
-        </AccordionDetails>
-      </Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
+        <Typography sx={{ width: '33%', flexShrink: 0, fontWeight: '500' }}>{`${props.floor.name}`}</Typography>
+        <Typography sx={{ color: 'text.secondary' }}>{`${props.floor.no_of_slots} slots`}</Typography>
+      </AccordionSummary>
+      <AccordionDetails sx={{ backgroundColor: '#c8c9cb' }}>
+        <Typography>| Entrance |</Typography>
+        {props.name === 'dashboard' ? <FloorPlan /> : <DriverFloorPlan />}
+      </AccordionDetails>
+    </Accordion>
+      {/* } */}
+      
     </div>
   );
 }

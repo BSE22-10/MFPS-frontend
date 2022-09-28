@@ -239,7 +239,7 @@ function HomePayment() {
                       <div>
                         <div>
                           <label htmlFor="phoneNumber">
-                            Amount (300 to 500) UGX<span className="asterisks">*</span>
+                            Amount (25 to 30) UGX<span className="asterisks">*</span>
                           </label>
                         </div>
                         <TextField1

@@ -11,6 +11,7 @@ function DriverFloorPlan(props) {
   const floor = useContext(DriverFloorContext);
   console.log(floor);
   const [loading, setLoading] = useState(true);
+  const [isFull, setIsFull] = useState(false);
   const [slots, setSlots] = useState([]);
   const [timeLeft, setTimeLeft] = useState(0);
   // const [occupied, setOccupuied] = useState(0);
@@ -19,6 +20,7 @@ function DriverFloorPlan(props) {
   var occupied = 0,
     available = 0;
   useEffect(() => {
+    // localhost:8000/floors/checkFullParking
     setInterval(() => {
       setTimeLeft(timeLeft - 1);
     }, 1000);
@@ -31,17 +33,36 @@ function DriverFloorPlan(props) {
       },
     })
       .then((result) => {
-        console.log('Here');
         setSlots(result.data);
         setLoading(false);
       })
       .catch((error) => {
         console.log(error);
       });
+
+      axios({
+        method: 'get',
+        url: `${process.env.REACT_APP_API_URL}/floors/checkFullParking`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((result) => {
+          console.log(result.data.status)
+          setIsFull(result.data.status);
+          // setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   }, [timeLeft]);
+  
+  
   return (
     <div>
-      <Grid
+
+      <div>
+           <Grid
         container
         // display="flex"
         maxWidth="100%"
@@ -51,6 +72,7 @@ function DriverFloorPlan(props) {
         // style={{margin:'50px auto'}}
         spacing={2}
       >
+        
         {slots.map((slot) => {
           count += 1;
           // console.log(slot.SlotStatus[0] === undefined);
@@ -84,6 +106,9 @@ function DriverFloorPlan(props) {
           <Typography>{occupied}</Typography>
         </Stack>
       </Stack>
+      </div>
+      
+
     </div>
   );
 }

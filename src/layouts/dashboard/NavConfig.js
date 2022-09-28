@@ -31,11 +31,11 @@ const navConfig = [
     path: '/dashboard/floors',
     icon: getIcon('eva:car-fill'),
   },
-  {
-    title: 'logout',
-    path: '/login',
-    icon: getIcon('eva:lock-fill'),
-  },
+  // {
+  //   title: 'logout',
+  //   path: '/login',
+  //   icon: getIcon('eva:lock-fill'),
+  // },
 ];
 
 export default navConfig;

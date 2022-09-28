@@ -194,7 +194,7 @@ export default function DashboardApp() {
   </Typography> */}
 
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={3} lg={4}>
+            {/* <Grid item xs={12} sm={6} md={3} lg={4}>
               <AppWidgetSummary title="Daily" total={10} color="primary" icon={'bi:calendar-day'} />
             </Grid>
 
@@ -204,7 +204,7 @@ export default function DashboardApp() {
 
             <Grid item xs={12} sm={6} md={3} lg={4}>
               <AppWidgetSummary title="Monthly" total={15} color="warning" icon={'bi:calendar-month'} />
-            </Grid>
+            </Grid> */}
             <div>
               <NewBarChart />
             </div>
